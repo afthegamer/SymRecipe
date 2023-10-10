@@ -27,7 +27,10 @@ class Ingredient
 
     #[ORM\Column]
     #[Assert\NotNull()]
-    private \DateTimeImmutable $createdAt ;
+    private ?\DateTimeImmutable $createdAt ;
+    public function __construct(){
+        $this->createdAt = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
