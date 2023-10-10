@@ -15,6 +15,19 @@ services:
       # - ./docker/db/data:/var/lib/postgresql/data:rw
 ###< doctrine/doctrine-bundle ###
 
+  adminer:
+    image: adminer
+    environment:
+      ADMINER_DEFAULT_DB_DRIVER: pgsql
+      ADMINER_DEFAULT_DB_HOST: database
+      ADMINER_DEFAULT_DB_NAME: ${POSTGRES_DB:-app}
+      ADMINER_DEFAULT_DB_USERNAME: ${POSTGRES_USER:-app}
+      ADMINER_DEFAULT_DB_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+
 volumes:
 ###> doctrine/doctrine-bundle ###
   database_data:
