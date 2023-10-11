@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SymRecipe - Mes Ingredient{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <div class="container mt-4">
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success mt-4">
+                    {{ message }}
+                </div>
+            {% endfor %}
+
+            {% if not ingredients.items is same as([]) %}
+        <h1>Mes Ingredient</h1>
+                <a href="{{ path('ingredient.new') }}" class="btn btn-primary"> ajouter un ingrédient</a>
+        <div class="count">
+            il y a {{ ingredients.getTotalItemCount }} ingrédiant au total
+        </div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Numéro</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Prix</th>
+                    <th scope="col">Date de création</th>
+                    <th scope="col">Edition</th>
+                    <th scope="col">Suppression</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            {% for ingredient in ingredients %}
+                <tr class="table-primary">
+                    <th scope="row">{{ ingredient.id }}</th>
+                    <td>{{ ingredient.name }}</td>
+                    <td>{{ ingredient.price }}</td>
+                    <td>{{ ingredient.createdAt | date("m/d/Y") }}</td>
+                    <td><a href="{{ path('ingredient.edit', {id: ingredient.id}) }}" class="btn btn-info">Modifier</a></td>
+                    <td><a href="{{ path('ingredient.delete', {id: ingredient.id}) }}" class="btn btn-warning">Supprimer</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="container">
+            <div class="navigation d-flex justify-content-center">
+                {{ knp_pagination_render(ingredients) }}
+            </div>
+        </div>
+        {% else %}
+            <h4>Il n'y a pas d'ingrédients</h4>
+
+{#            <a href="{{ path('ingredient.new') }}" class="btn btn-primary">#}
+{#                Créer un ingrédient#}
+{#            </a>#}
+        {% endif %}
+
+    </div>
+
+{% endblock %}
