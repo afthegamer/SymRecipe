@@ -52,6 +52,9 @@ command:
 # Créer une commande console
 controller:
 	$(CONSOLE) make:controller
+#créer fixture
+fixtures:
+	$(CONSOLE) doctrine:fixtures:load
 
 .PHONY: help entity crud form migration migrate user validator command
 
