@@ -63,3 +63,11 @@ build:
 	npm run build
 watch:
 	npm run watch
+
+start:
+	docker compose up -d
+	symfony serve
+
+stop:
+	symfony serve:stop
+	docker compose stop
