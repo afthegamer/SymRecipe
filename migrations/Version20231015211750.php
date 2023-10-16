@@ -14,7 +14,7 @@ final class Version20231015211750 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Creat table for entity Recipe';
     }
 
     public function up(Schema $schema): void

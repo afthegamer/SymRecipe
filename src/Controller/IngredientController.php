@@ -15,7 +15,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class IngredientController extends AbstractController
 {
     #[Route('/ingredient', name: 'ingredient.index', methods: ['GET'])]
-    public function index(IngredientRepository $repository,PaginatorInterface $paginator, Request $request): Response
+    public function index(IngredientRepository $repository,
+                          PaginatorInterface $paginator,
+                          Request $request): Response
     {
         $ingredients = $paginator->paginate(
             $repository->findAll(), /* query NOT result */
