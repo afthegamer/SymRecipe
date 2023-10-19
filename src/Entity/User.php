@@ -52,9 +52,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotNull]
     private ?\DateTimeImmutable $createAt = null;
 
+    #[ORM\Column]
+    #[Assert\NotNull()]
+    private \DateTimeImmutable $updatedAt;
+
     public function __construct()
     {
         $this->createAt= new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
+
     }
 
     public function getId(): ?int
@@ -173,4 +179,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
 }
