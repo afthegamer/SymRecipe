@@ -7,6 +7,8 @@ use App\Form\IngredientType;
 use App\Repository\IngredientRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class IngredientController extends AbstractController
 {
     #[Route('/ingredient', name: 'ingredient.index', methods: ['GET'])]
+    #[IsGranted('ROLE_USER')]
     public function index(IngredientRepository $repository,
                           PaginatorInterface $paginator,
                           Request $request): Response
@@ -28,7 +31,8 @@ class IngredientController extends AbstractController
             'ingredients' => $ingredients
         ]);
     }
-    #[Route('/ingredient/nouveau', name: 'ingredient.new', methods: ['GET','POST'])]
+    #[Route('/ingredient/creation', 'ingredient.new')]
+    #[IsGranted('ROLE_USER')]
     public function new(
         Request $request,
         EntityManagerInterface $manager
@@ -64,20 +68,18 @@ class IngredientController extends AbstractController
 //
 //        pour récupérer id si ça ne fonctionne pas il fait réinstall avec cette commande
 // composer require sensio/framework-extra-bundle
-    #[Route('/ingredient/edition/{id}', 'ingredient.edit', methods: ['GET','POST'])]
+    #[Security("is_granted('ROLE_USER') and user === ingredient.getUser()")]
+    #[Route('/ingredient/edition/{id}', 'ingredient.edit', methods: ['GET', 'POST'])]
     public function edit(
         Ingredient $ingredient,
         Request $request,
         EntityManagerInterface $manager
-    ): Response
-    {
+    ): Response {
         $form = $this->createForm(IngredientType::class, $ingredient);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $ingredient = $form->getData();
-            dd($form);
-
 
             $manager->persist($ingredient);
             $manager->flush();
@@ -94,7 +96,10 @@ class IngredientController extends AbstractController
             'form' => $form->createView()
         ]);
     }
-    #[Route('/ingredient/suppression/{id}','ingredient.delete', methods: ['GET'])]
+
+
+    #[Route('/ingredient/suppression/{id}', 'ingredient.delete', methods: ['GET'])]
+    #[Security("is_granted('ROLE_USER') and user === ingredient.getUser()")]
     public function delete(EntityManagerInterface $manager, Ingredient $ingredient):Response{
         $manager->remove($ingredient);
         $manager->flush();
