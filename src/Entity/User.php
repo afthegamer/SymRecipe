@@ -58,14 +58,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotNull()]
     private \DateTimeImmutable $updatedAt;
 
-    #[ORM\OneToMany(mappedBy: 'userLead', targetEntity: Ingredient::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Ingredient::class, orphanRemoval: true)]
     private Collection $ingredients;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Recipe::class, orphanRemoval: true)]
+    private Collection $recipes;
 
     public function __construct()
     {
         $this->createAt= new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
         $this->ingredients = new ArrayCollection();
+        $this->recipes = new ArrayCollection();
 
     }
 
@@ -210,7 +214,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->ingredients->contains($ingredient)) {
             $this->ingredients->add($ingredient);
-            $ingredient->setUserLead($this);
+            $ingredient->setUser($this);
         }
 
         return $this;
@@ -220,8 +224,38 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->ingredients->removeElement($ingredient)) {
             // set the owning side to null (unless already changed)
-            if ($ingredient->getUserLead() === $this) {
-                $ingredient->setUserLead(null);
+            if ($ingredient->getUser() === $this) {
+                $ingredient->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Recipe>
+     */
+    public function getRecipes(): Collection
+    {
+        return $this->recipes;
+    }
+
+    public function addRecipe(Recipe $recipe): static
+    {
+        if (!$this->recipes->contains($recipe)) {
+            $this->recipes->add($recipe);
+            $recipe->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRecipe(Recipe $recipe): static
+    {
+        if ($this->recipes->removeElement($recipe)) {
+            // set the owning side to null (unless already changed)
+            if ($recipe->getUser() === $this) {
+                $recipe->setUser(null);
             }
         }
 
