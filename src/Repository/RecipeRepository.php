@@ -21,28 +21,24 @@ class RecipeRepository extends ServiceEntityRepository
         parent::__construct($registry, Recipe::class);
     }
 
-//    /**
-//     * @return Recipe[] Returns an array of Recipe objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('r.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Recipe
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findPublicRecipe(?int $nbRecipes) :array
+    {
+        $queryBuilder = $this->createQueryBuilder('r')
+            /**
+             * il faut mettre
+             * →where('r.isPublic = true')
+             * si vous prévoyez de d'utiliser PostgreSQL ou un autre SGBD
+             * sinon
+             * →where('r.isPublic=1')
+             * est valable à l'utilisation avec my sql par exemple
+            */
+            ->where('r.isPublic = true')
+            ->orderBy('r.createdAt', 'DESC');
+        if($nbRecipes !== 0 || $nbRecipes !== null)
+        {
+            $queryBuilder->setMaxResults($nbRecipes);
+        }
+        return $queryBuilder->getQuery()
+            ->getResult();
+    }
 }
