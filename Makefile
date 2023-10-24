@@ -17,6 +17,12 @@ help:
 	@echo "  user         Pour créer une entité utilisateur"
 	@echo "  validator    Pour créer une nouvelle contrainte de validation"
 	@echo "  command      Pour créer une nouvelle commande console"
+	@echo "  controller   Pour créer un nouveau contrôleur"
+	@echo "  fixtures     Pour charger les fixtures"
+	@echo "  build        Pour construire l'application"
+	@echo "  watch        Pour surveiller les changements de l'application"
+	@echo "  start        Pour démarrer l'application"
+	@echo "  stop         Pour arrêter l'application"
 
 # Créer une entité
 entity:

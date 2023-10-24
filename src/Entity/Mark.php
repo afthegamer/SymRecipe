@@ -9,9 +9,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MarkRepository::class)]
 #[UniqueEntity(
-    fields: ['user', 'recipe'],
+    fields: ['users', 'recipe'],
     message: 'Cet utilisateur a déjà noté cette recette.',
-    errorPath: 'user'
+    errorPath: 'users'
 )]
 class Mark
 {

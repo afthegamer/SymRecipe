@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Mark;
 use App\Entity\Recipe;
+use App\Form\MarkType;
 use App\Form\RecipeType;
+use App\Repository\MarkRepository;
 use App\Repository\RecipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -56,12 +59,52 @@ class RecipeController extends AbstractController
     #[Route('/recette/{id}', 'recipe.show', methods: ['GET', 'POST'])]
     public function show(
         Recipe $recipe,
+//        Mark $mark,
+        MarkRepository $markRepository,
         Request $request,
         EntityManagerInterface $manager
     ): Response
     {
+        $mark =new Mark();
+        $form = $this->createForm(MarkType::class,$mark);
+//        dd($form->handleRequest($request));
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $mark->setUsers($this->getUser())
+            ->setRecipe($recipe)
+            ;
+
+            $existingMark= $markRepository->findOneBy([
+                'users'=>$this->getUser(),
+                'recipe'=>$recipe
+            ]);
+
+            if (!$existingMark) {
+                $manager->persist($mark);
+            } else {
+                $existingMark->setMark(
+                    $form->getData()->getMark()
+                );
+//                    dd($form->getData());
+            }
+
+
+//            dd($form->getData());
+
+
+            $this->addFlash(
+                'success',
+                'Votre ingrédient a été modifié avec succès !'
+            );
+
+            $manager->flush();
+            return $this->redirectToRoute('recipe.show',['id'=>$recipe->getId()]);
+//            dd($form);
+        }
         return $this->render('pages/recipe/show.html.twig', [
             'recipe' => $recipe,
+            'form'=>$form->createView()
         ]);
     }
     #[IsGranted('ROLE_USER')]

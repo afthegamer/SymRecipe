@@ -6,9 +6,19 @@ SymRecipe -
 
 {% block body %}
     <div class="container">
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success mt-4">
+                {{ message }}
+            </div>
+        {% endfor %}
         <h1 class="mt-4">
             {{ recipe.name }}
         </h1>
+        {% if recipe.average %}
+        <p>Note {{ recipe.average|number_format(2, '.', ',') }} /5</p>
+        {% else %}
+            <p>Cette recette n'a pas encore était noté</p>
+        {% endif %}
         <div class="mt-4">
             <span class="badge bg-primary">Créer le {{ recipe.createdAt | date('d/m/y')}}</span>
         </div>
@@ -34,8 +44,8 @@ SymRecipe -
             {% endif %}
         </div>
         <div class="mt-4">
-            {% if recipe.difficulty %}
-                <p>Pour un prix de : {{ recipe.price }} €</p>
+            {% if recipe.price %}
+                <p>Pour un prix de : {{ recipe.price|number_format(2, '.', ',') }} €</p>
             {% else %}
                 <p>prix non renseigner</p>
             {% endif %}
@@ -45,6 +55,7 @@ SymRecipe -
         {% for ingredient in recipe.ingredients %}
             <span class="badge bg-primary">{{ ingredient.name }}</span>
         {% endfor %}
+        {{ form(form) }}
     </div>
 
 {% endblock %}
