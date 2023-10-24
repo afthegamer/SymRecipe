@@ -1,1 +1,1 @@
-# -SymRecipe
+# SymRecipe

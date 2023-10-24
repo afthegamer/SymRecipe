@@ -68,7 +68,7 @@ class Recipe
     private ?User $user = null;
 
     #[ORM\Column]
-    private ?bool $isPublic = null;
+    private bool $isPublic = false;
 
     #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: Mark::class, orphanRemoval: true)]
     private Collection $marks;
