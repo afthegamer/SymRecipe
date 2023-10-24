@@ -27,8 +27,8 @@
                     <th scope="col">Difficulter</th>
                     <th scope="col">Date de création</th>
                     <th scope="col">Edition</th>
-                    <th scope="col">regarder</th>
                     <th scope="col">Suppression</th>
+                    <th scope="col">regarder</th>
                 </tr>
             </thead>
             <tbody>
@@ -41,8 +41,8 @@
                     <td>{{ (recipe.difficulty is same as(null))?'Non renseigner':recipe.difficulty }}</td>
                     <td>{{ recipe.createdAt | date("m/d/Y") }}</td>
                     <td><a href="{{ path('recipe.edit', {id: recipe.id}) }}" class="btn btn-info">Modifier</a></td>
-                    <td><a href="{{ path('recipe.show', {id: recipe.id}) }}" class="btn btn-warning">Voir</a></td>
                     <td><a href="{{ path('recipe.delete', {id: recipe.id}) }}" class="btn btn-warning">Supprimer</a></td>
+                    <td><a href="{{ path('recipe.show', {id: recipe.id}) }}" class="btn btn-warning">Voir</a></td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -55,9 +55,9 @@
         {% else %}
             <h4>Il n'y a pas de recette</h4>
 
-{#            <a href="{{ path('ingredient.new') }}" class="btn btn-primary">#}
-{#                Créer un ingrédient#}
-{#            </a>#}
+            <a href="{{ path('recipe.new') }}" class="btn btn-primary">
+                Créer une recette
+            </a>
         {% endif %}
 
     </div>

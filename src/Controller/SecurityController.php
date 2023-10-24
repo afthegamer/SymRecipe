@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-
+#[Route('/identification')]
 class SecurityController extends AbstractController
 {
     #[Route('/connexion', name: 'security.login', methods: ['GET','POST'])]
