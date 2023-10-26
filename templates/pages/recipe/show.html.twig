@@ -14,6 +14,9 @@ SymRecipe -
         <h1 class="mt-4">
             {{ recipe.name }}
         </h1>
+        <div class="mt-4 recipe_image">
+            <img style="max-width: 500px;" src="{{ vich_uploader_asset(recipe,'imageFile') }}" alt="">
+        </div>
         {% if recipe.average %}
         <p>Note {{ recipe.average|number_format(2, '.', ',') }} /5</p>
         {% else %}
