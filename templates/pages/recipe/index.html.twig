@@ -37,7 +37,7 @@
                 <tr class="table-primary">
                     <th scope="row">{{ recipe.id }}</th>
                     <td>{{ recipe.name }}</td>
-                    <td>{{ (recipe.price is same as(null))?'Non renseigner':recipe.price }}</td>
+                    <td>{{ (recipe.price|number_format(2,'.',',') is same as(null))?'Non renseigner':recipe.price }}</td>
                     <td>{{ (recipe.difficulty is same as(null))?'Non renseigner':recipe.difficulty }}</td>
                     <td>{{ recipe.createdAt | date("m/d/Y") }}</td>
                     <td><a href="{{ path('recipe.edit', {id: recipe.id}) }}" class="btn btn-info">Modifier</a></td>

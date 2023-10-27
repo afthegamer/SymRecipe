@@ -49,15 +49,14 @@ class IngredientType extends AbstractType
                 'attr' => [
                     'class' => 'btn btn-primary mt-4'
                 ],
-                'label' => 'Créer mon ingrédient'
+                'label' => $options['label_button']
             ]);
     }
-
-
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Ingredient::class,
+            'label_button' => 'Créer mon ingrédient',
         ]);
     }
 }

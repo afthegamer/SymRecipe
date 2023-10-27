@@ -89,7 +89,9 @@ class RecipeController extends AbstractController
         EntityManagerInterface $manager
     ): Response
     {
-        $form = $this->createForm(RecipeType::class, $recipe);
+        $form = $this->createForm(RecipeType::class, $recipe,[
+            'label_button'=>'Mettre a jour ma recette'
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
