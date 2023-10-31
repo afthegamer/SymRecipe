@@ -6,7 +6,10 @@
 .form-image img {
     width: 500px;
 }
-
+/*possibilite hide reCaptchaV3*/
+/*.grecaptcha-badge{*/
+/*    display: none;*/
+/*}*/
 /*body {*/
 /*    flex-direction: column;*/
 /*    display: flex;*/
