@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Contact;
 use App\Entity\Recipe;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -44,6 +45,8 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkToCrud('Utilisateur', 'fas fa-bowl-rice', User::class);
+        yield MenuItem::linkToCrud('Utilisateur', 'fas fa-user', User::class);
+//        yield MenuItem::linkToCrud('Utilisateur', 'fas fa-bowl-rice', Recipe::class);
+        yield MenuItem::linkToCrud('Message de contact', 'fas fa-envelope', Contact::class);
     }
 }
