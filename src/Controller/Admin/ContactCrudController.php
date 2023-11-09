@@ -9,6 +9,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 
 class ContactCrudController extends AbstractCrudController
 {
@@ -24,6 +25,7 @@ class ContactCrudController extends AbstractCrudController
             ->setEntityLabelInSingular('Message de contact')
             ->setPageTitle('index',"administration des demande de contact")
             ->setPaginatorPageSize(5)
+//            ->addFormTheme('@FOSCKEditor/Form/ckeditor_widget.html.twig')
             ;
     }
 
@@ -39,6 +41,7 @@ class ContactCrudController extends AbstractCrudController
             TextField::new('email')
                 ->setFormTypeOption('disabled','disabled'),
             TextEditorField::new('message')
+//                ->setFormType(CKEditorType::class)
                 ->hideOnIndex()
                 ->setFormTypeOption('disabled','disabled'),
             DateTimeField::new('createdAt')
