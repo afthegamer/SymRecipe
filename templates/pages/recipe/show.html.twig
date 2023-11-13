@@ -27,7 +27,7 @@ SymRecipe -
         </div>
         <div class="mt-4">
             {% if recipe.time %}
-                <p>Temps (en minute) : {{ recipe.time }}</p>
+                <p>Temps (en minute) : {{ recipe.time | min_to_hour }}</p>
             {% else %}
                 <p>Aucun temps n'as était renseigner</p>
             {% endif %}
