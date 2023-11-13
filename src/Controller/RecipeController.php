@@ -43,8 +43,13 @@ class RecipeController extends AbstractController
         PaginatorInterface $paginator,
         Request $request
     ): Response {
+        $cache= new FilesystemAdapter();
+        $data=$cache->get('recipes',function (ItemInterface $item)use ($repository){
+            $item->expiresAfter(5);
+            return $repository->findPublicRecipe(null);
+        });
         $recipes = $paginator->paginate(
-            $repository->findPublicRecipe(null),
+            $data,
             $request->query->getInt('page', 1),
             10
         );

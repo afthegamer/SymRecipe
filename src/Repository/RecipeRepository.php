@@ -23,6 +23,7 @@ class RecipeRepository extends ServiceEntityRepository
 
     public function findPublicRecipe(?int $nbRecipes) :array
     {
+        sleep(3);//cette ligne est a des fin de test sur le cache a retirer pour une vrais mise en prod
         $queryBuilder = $this->createQueryBuilder('r')
             /**
              * il faut mettre
