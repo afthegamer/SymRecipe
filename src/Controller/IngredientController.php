@@ -7,8 +7,8 @@ use App\Form\IngredientType;
 use App\Repository\IngredientRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+//use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,6 +41,7 @@ class IngredientController extends AbstractController
         $ingredient= new Ingredient();
         $form=$this->createForm(IngredientType::class, $ingredient);
 
+//        dd($request->request);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $ingredient=$form->getData();
@@ -68,7 +69,7 @@ class IngredientController extends AbstractController
 //
 //        pour récupérer id si ça ne fonctionne pas il fait réinstall avec cette commande
 // composer require sensio/framework-extra-bundle
-    #[Security("is_granted('ROLE_USER') and user === ingredient.getUser()")]
+    //#[Security("is_granted('ROLE_USER') and user === ingredient.getUser()")]
     #[Route('/ingredient/edition/{id}', 'ingredient.edit', methods: ['GET', 'POST'])]
     public function edit(
         Ingredient $ingredient,
@@ -101,7 +102,7 @@ class IngredientController extends AbstractController
 
 
     #[Route('/ingredient/suppression/{id}', 'ingredient.delete', methods: ['GET'])]
-    #[Security("is_granted('ROLE_USER') and user === ingredient.getUser()")]
+    //#[Security("is_granted('ROLE_USER') and user === ingredient.getUser()")]
     public function delete(EntityManagerInterface $manager, Ingredient $ingredient):Response{
         $manager->remove($ingredient);
         $manager->flush();

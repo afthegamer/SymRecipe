@@ -11,8 +11,8 @@ use App\Repository\RecipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Psr\Cache\InvalidArgumentException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+//use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\HttpFoundation\Request;
@@ -86,7 +86,7 @@ class RecipeController extends AbstractController
                 'form'=>$form->createView()
             ]);
         }
-    #[Security("is_granted('ROLE_USER') and user === recipe.getUser()")]
+    //#[Security("is_granted('ROLE_USER') and user === recipe.getUser()")]
     #[Route('/edition/{id}', 'recipe.edit', methods: ['GET', 'POST'])]
     public function edit(
         Recipe $recipe,
@@ -117,7 +117,7 @@ class RecipeController extends AbstractController
             'form' => $form->createView()
         ]);
     }
-    #[Security("is_granted('ROLE_USER') and (recipe.getIsPublic() === true || user === recipe.getUser())")]
+    //#[Security("is_granted('ROLE_USER') and (recipe.getIsPublic() === true || user === recipe.getUser())")]
     #[Route('/{id}', 'recipe.show', methods: ['GET','POST'])]
     public function show(
         Recipe $recipe,
@@ -163,7 +163,7 @@ class RecipeController extends AbstractController
             'form'=>$form->createView()
         ]);
     }
-    #[Security("is_granted('ROLE_USER') and user === recipe.getUser()")]
+    //#[Security("is_granted('ROLE_USER') and user === recipe.getUser()")]
     #[Route('/recette/{id}', 'recipe.delete', methods: ['GET', 'POST'])]
     public function delete(EntityManagerInterface $manager, Recipe $recipe):Response{
         $manager->remove($recipe);
