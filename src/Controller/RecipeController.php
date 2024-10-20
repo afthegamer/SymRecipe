@@ -44,10 +44,19 @@ class RecipeController extends AbstractController
         Request $request
     ): Response {
         $cache= new FilesystemAdapter();
-        $data=$cache->get('recipes',function (ItemInterface $item)use ($repository){
+        $data = $cache->get('recipes', function (ItemInterface $item) use ($repository) {
             $item->expiresAfter(5);
-            return $repository->findPublicRecipe(null);
+            $recipes = $repository->findPublicRecipe(null);
+
+            // Forcer le chargement des utilisateurs associés pour éviter les proxies
+            foreach ($recipes as $recipe) {
+                $user = $recipe->getUser(); // Résoudre le proxy
+            }
+
+            return $recipes;
         });
+
+
         $recipes = $paginator->paginate(
             $data,
             $request->query->getInt('page', 1),
