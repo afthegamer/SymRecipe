@@ -85,3 +85,11 @@ tests:
 	php bin/console d:f:l --no-interaction --env=test
 	php bin/phpunit --testdox tests/Unit/
 	php bin/phpunit --testdox tests/Functional/
+
+init:
+	composer install
+	npm install
+	@make build
+	@make migrate
+	@make fixtures
+	@make start
