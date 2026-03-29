@@ -93,7 +93,7 @@ class RecipeType extends AbstractType
                 ],
                 'constraints' => [
                     new Assert\Positive(),
-                    new Assert\LessThan(5)
+                    new Assert\LessThan(6)
                 ]
             ])
             ->add('description', TextareaType::class, [

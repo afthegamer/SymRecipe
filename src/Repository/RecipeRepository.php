@@ -23,19 +23,10 @@ class RecipeRepository extends ServiceEntityRepository
 
     public function findPublicRecipe(?int $nbRecipes) :array
     {
-        sleep(3);//cette ligne est a des fin de test sur le cache a retirer pour une vrais mise en prod
         $queryBuilder = $this->createQueryBuilder('r')
-            /**
-             * il faut mettre
-             * →where('r.isPublic = true')
-             * si vous prévoyez de d'utiliser PostgreSQL ou un autre SGBD
-             * sinon
-             * →where('r.isPublic=1')
-             * est valable à l'utilisation avec my sql par exemple
-            */
             ->where('r.isPublic = true')
             ->orderBy('r.createdAt', 'DESC');
-        if($nbRecipes !== 0 || $nbRecipes !== null)
+        if($nbRecipes !== null && $nbRecipes !== 0)
         {
             $queryBuilder->setMaxResults($nbRecipes);
         }

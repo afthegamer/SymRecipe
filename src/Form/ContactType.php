@@ -23,8 +23,8 @@ class ContactType extends AbstractType
             ->add('fullName', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
-                    'minlenght' => '2',
-                    'maxlenght' => '50',
+                    'minlength' => '2',
+                    'maxlength' => '50',
                 ],
                 'label' => 'Nom / Prénom',
                 'label_attr' => [
@@ -34,8 +34,8 @@ class ContactType extends AbstractType
             ->add('email', EmailType::class, [
                 'attr' => [
                     'class' => 'form-control',
-                    'minlenght' => '2',
-                    'maxlenght' => '180',
+                    'minlength' => '2',
+                    'maxlength' => '180',
                 ],
                 'label' => 'Adresse email',
                 'label_attr' => [
@@ -50,8 +50,8 @@ class ContactType extends AbstractType
             ->add('subject', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
-                    'minlenght' => '2',
-                    'maxlenght' => '100',
+                    'minlength' => '2',
+                    'maxlength' => '100',
                 ],
                 'label' => 'Sujet',
                 'label_attr' => [

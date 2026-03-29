@@ -6,16 +6,16 @@ use App\Entity\User;
 use App\Form\UserPasswordType;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
-//use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends AbstractController
 {
-    //#[Security("is_granted('ROLE_USER') and user === choosenUser")]
+    #[IsGranted('ROLE_USER')]
     #[Route('/utilisateur/edition/{id}', name: 'user.edit',methods: ['GET','POST'])]
     public function edit(User $choosenUser,
                          Request $request,
@@ -23,14 +23,9 @@ class UserController extends AbstractController
                          UserPasswordHasherInterface $hasher
     ): Response
     {
-        if (!$this->getUser())
-        {
-            return $this->redirectToRoute('security.login');
-        }
-
         if ($this->getUser() !== $choosenUser)
         {
-            return $this->redirectToRoute('recipe.index');
+            throw $this->createAccessDeniedException();
         }
 
         $form = $this->createForm(UserType::class,$choosenUser);
@@ -38,7 +33,6 @@ class UserController extends AbstractController
         if($form->isSubmitted()&&$form->isValid())
         {
             if($hasher->isPasswordValid($choosenUser, $form->getData()->getPlainPassword())){
-//                dd($form);
 
                 $choosenUser=$form->getData();
                 $manager->persist($choosenUser);
@@ -60,7 +54,7 @@ class UserController extends AbstractController
             'form'=> $form->createView()
         ]);
     }
-    //#[Security("is_granted('ROLE_USER') and user === user.getUser()")]
+    #[IsGranted('ROLE_USER')]
     #[Route('/utilisateur/edition-mot-de-passe/{id}','user.edit.password',methods: ['GET','POST'])]
     public function editPassword(
         User $choosenUser,
@@ -69,6 +63,10 @@ class UserController extends AbstractController
         UserPasswordHasherInterface $hasher
     ): Response
     {
+        if ($this->getUser() !== $choosenUser)
+        {
+            throw $this->createAccessDeniedException();
+        }
 
         $form = $this->createForm(UserPasswordType::class);
         $form->handleRequest($request);

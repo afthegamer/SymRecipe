@@ -38,7 +38,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     #[Assert\NotBlank()]
-    private string $password = 'password';
+    private string $password;
 
     #[ORM\Column(length: 50)]
     #[Assert\NotBlank()]
@@ -155,8 +155,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function eraseCredentials(): void
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        $this->plainPassword = null;
     }
 
     public function getFullName(): ?string

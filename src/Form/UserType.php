@@ -33,8 +33,8 @@ class UserType extends AbstractType
         ->add('pseudo', TextType::class, [
             'attr' => [
                 'class' => 'form-control',
-                'minlenght' => '2',
-                'maxlenght' => '50',
+                'minlength' => '2',
+                'maxlength' => '50',
             ],
             'required' => false,
             'label' => 'Pseudo (Facultatif)',

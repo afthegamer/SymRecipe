@@ -8,7 +8,6 @@ use App\Repository\IngredientRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-//use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,7 +40,6 @@ class IngredientController extends AbstractController
         $ingredient= new Ingredient();
         $form=$this->createForm(IngredientType::class, $ingredient);
 
-//        dd($request->request);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $ingredient=$form->getData();
@@ -51,7 +49,7 @@ class IngredientController extends AbstractController
 
             $this->addFlash(
                 'success',
-                'Votre ingrédient a été modifié avec succès !'
+                'Votre ingrédient a été créé avec succès !'
             );
 
             return $this->redirectToRoute('ingredient.index');
@@ -61,21 +59,18 @@ class IngredientController extends AbstractController
             'form' =>$form->createView()
         ]);
     }
-//    grace    as SensioFrameworkExtraBundle plus besoin de faire :
-//    public function edit(IngredientRepository $repository,int $id) :Response
-//    {
-//        $ingredient= $repository->findOneBy(["id"=>$id]);
-//        $form = $this->createForm(IngredientType::class, $ingredient);
-//
-//        pour récupérer id si ça ne fonctionne pas il fait réinstall avec cette commande
-// composer require sensio/framework-extra-bundle
-    //#[Security("is_granted('ROLE_USER') and user === ingredient.getUser()")]
+
+    #[IsGranted('ROLE_USER')]
     #[Route('/ingredient/edition/{id}', 'ingredient.edit', methods: ['GET', 'POST'])]
     public function edit(
         Ingredient $ingredient,
         Request $request,
         EntityManagerInterface $manager
     ): Response {
+        if ($ingredient->getUser() !== $this->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
+
         $form = $this->createForm(IngredientType::class, $ingredient,[
             'label_button' => 'Mettre à jour mon ingrédient',
             ]);
@@ -101,14 +96,18 @@ class IngredientController extends AbstractController
     }
 
 
+    #[IsGranted('ROLE_USER')]
     #[Route('/ingredient/suppression/{id}', 'ingredient.delete', methods: ['GET'])]
-    //#[Security("is_granted('ROLE_USER') and user === ingredient.getUser()")]
     public function delete(EntityManagerInterface $manager, Ingredient $ingredient):Response{
+        if ($ingredient->getUser() !== $this->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
+
         $manager->remove($ingredient);
         $manager->flush();
         $this->addFlash(
             'success',
-            'Votre ingrédient a été modifié avec succès !'
+            'Votre ingrédient a été supprimé avec succès !'
         );
         return $this->redirectToRoute('ingredient.index');
     }

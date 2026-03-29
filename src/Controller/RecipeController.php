@@ -12,7 +12,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-//use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\HttpFoundation\Request;
@@ -86,7 +85,7 @@ class RecipeController extends AbstractController
                 $manager->flush();
                 $this->addFlash(
                     'success',
-                    'Votre recette a bien était Créer'
+                    'Votre recette a été créée avec succès !'
                 );
                 return $this->redirectToRoute('recipe.index');
 
@@ -95,7 +94,7 @@ class RecipeController extends AbstractController
                 'form'=>$form->createView()
             ]);
         }
-    //#[Security("is_granted('ROLE_USER') and user === recipe.getUser()")]
+    #[IsGranted('ROLE_USER')]
     #[Route('/edition/{id}', 'recipe.edit', methods: ['GET', 'POST'])]
     public function edit(
         Recipe $recipe,
@@ -103,20 +102,24 @@ class RecipeController extends AbstractController
         EntityManagerInterface $manager
     ): Response
     {
+        if ($recipe->getUser() !== $this->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
+
         $form = $this->createForm(RecipeType::class, $recipe,[
             'label_button'=>'Mettre a jour ma recette'
         ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $ingredient = $form->getData();
+            $recipe = $form->getData();
 
-            $manager->persist($ingredient);
+            $manager->persist($recipe);
             $manager->flush();
 
             $this->addFlash(
                 'success',
-                'Votre ingrédient a été modifié avec succès !'
+                'Votre recette a été modifiée avec succès !'
             );
 
             return $this->redirectToRoute('recipe.index');
@@ -126,7 +129,6 @@ class RecipeController extends AbstractController
             'form' => $form->createView()
         ]);
     }
-    //#[Security("is_granted('ROLE_USER') and (recipe.getIsPublic() === true || user === recipe.getUser())")]
     #[Route('/{id}', 'recipe.show', methods: ['GET','POST'])]
     public function show(
         Recipe $recipe,
@@ -161,7 +163,7 @@ class RecipeController extends AbstractController
 
             $this->addFlash(
                 'success',
-                'Votre ingrédient a été modifié avec succès !'
+                'Votre note a été enregistrée avec succès !'
             );
 
             $manager->flush();
@@ -172,14 +174,18 @@ class RecipeController extends AbstractController
             'form'=>$form->createView()
         ]);
     }
-    //#[Security("is_granted('ROLE_USER') and user === recipe.getUser()")]
+    #[IsGranted('ROLE_USER')]
     #[Route('/recette/{id}', 'recipe.delete', methods: ['GET', 'POST'])]
     public function delete(EntityManagerInterface $manager, Recipe $recipe):Response{
+        if ($recipe->getUser() !== $this->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
+
         $manager->remove($recipe);
         $manager->flush();
         $this->addFlash(
             'success',
-            'Votre recette a été supprimer avec succès !'
+            'Votre recette a été supprimée avec succès !'
         );
         return $this->redirectToRoute('recipe.index');
     }

@@ -18,7 +18,7 @@ class Contact
 
     #[ORM\Column(length: 50, nullable: true)]
     #[Assert\Length(min:2,max:50)]
-    private ?string $FullName = null;
+    private ?string $fullName = null;
 
     #[ORM\Column(length: 180/*, unique: true*/)]
     #[Assert\Email()]
@@ -49,12 +49,12 @@ class Contact
 
     public function getFullName(): ?string
     {
-        return $this->FullName;
+        return $this->fullName;
     }
 
-    public function setFullName(?string $FullName): static
+    public function setFullName(?string $fullName): static
     {
-        $this->FullName = $FullName;
+        $this->fullName = $fullName;
 
         return $this;
     }
